@@ -52,7 +52,7 @@ The explicit way
  create_error!(FileError => IoError);
  create_error!(SchemaError => ParseError);
 
- let error: Result<(), FileError::Error> = Err(FileError::io_error("".to_string()));
+ let error: Result<(), FileError> = Err(FileError::io_error("".to_string()));
 
  let mapped = error.map_err(|error| {
      SchemaError::parse_error(format!("SchemaError::ParseError error {error}"))
@@ -65,7 +65,7 @@ The explicit way
 
  The above code can be simplified using `map_to_error!`
  macro using the build in lower order function
- ``` rust
+ ```rust
  use std::fs;
  use std::io::Error;
  use error_ex::{create_error};
@@ -73,8 +73,8 @@ The explicit way
  create_error!(FileError => IoError);
  create_error!(SchemaError => ParseError);
  
- let error: Result<(), FileError::Error> = Err(FileError::IoError("".to_string()));
- 
+ let error: Result<(), FileError> = Err(FileError::io_error("".to_string()));
+
  let mapped = error.map_err(SchemaError::map_parse_error);
  ```
 

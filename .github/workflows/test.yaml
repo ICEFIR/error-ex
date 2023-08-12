@@ -16,7 +16,6 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@stable
         with:
-          profile: toolchain
           toolchain: stable
           override: true
 
