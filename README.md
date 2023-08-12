@@ -20,7 +20,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-error-ex = "0.1.0"
+error-ex = "0.1.2"
 ```
 
 ## Quickstart
