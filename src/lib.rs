@@ -1,3 +1,22 @@
+/// Defining an error with set of reason.
+/// # Usage
+/// ```
+/// create_error!(ErrorType => ErrorReason1, ErrorReason2, ErrorReason3)
+/// ```
+/// # Examples
+///
+/// ```
+/// use error_ex::{create_error, map_to_error};
+///
+/// create_error!(InputError => IllegalArgument, InvalidInput, MissingArgument);
+///
+/// ```
+///
+/// Now, you can use the following code to instantiate this error
+/// ```
+/// InputError::IllegalArgument(format!("Your message here"))
+/// ```
+///
 #[macro_export]
 macro_rules! create_error {
     ( $error:ident => $( $error_reason:ident ),* ) => {
@@ -51,6 +70,23 @@ macro_rules! create_error {
     };
 }
 
+/// Helper for mapping errors from one to another
+/// # Usage
+/// ### Error Mapping
+///
+/// The explicit way
+/// ```
+/// let asset = fs::read_to_string(path).map_err(|error| {
+/// SchemaError::IoError(format!("SchemaError::IoError cased by {error}"))
+/// })?;
+/// ```
+
+/// The above code can be simplified using `map_to_error!` macro
+/// ```rust
+/// let result: Result<(), Error> = Err(Error("Test".to_string()));
+/// let mapped_result = result.map_err(map_to_error!(InputError::IllegalArgument));
+/// ```
+///
 #[macro_export]
 macro_rules! map_to_error {
     ($error:ident :: $error_reason:ident) => {
