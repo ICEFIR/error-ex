@@ -8,6 +8,7 @@ keywords = ["error", "error-handling", "macro"]
 license = "MIT"
 repository = "https://github.com/ICEFIR/error-ex"
 rust-version = "1.56"
+description = "a Rust crate designed for those who desire clear, explicit, and easy-to-use error creation and handling."
 
 [dependencies]
 paste = "1.0.14"
