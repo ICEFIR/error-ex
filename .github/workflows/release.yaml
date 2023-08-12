@@ -32,13 +32,13 @@ jobs:
     name: "Create release"
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     needs: "get-tag"
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
     steps:
       - name: "Check out the repo"
         uses: actions/checkout@v3
 
       - name: "Create release"
-        uses: "taiki-e/create-gh-release-action@v1"
+        uses: taiki-e/create-gh-release-action@v1
         with:
           # (optional) Path to changelog.
           # changelog: CHANGELOG.md
@@ -55,16 +55,17 @@ jobs:
       - "create-release"
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout sources
+      - name: "Checkout sources"
         uses: actions/checkout@v3
 
-      - name: Install stable toolchain
+      - name: "Install stable toolchain"
         uses: dtolnay/rust-toolchain@stable
         with:
-          profile: minimal
+          profile: toolchain
           toolchain: stable
           override: true
-      - name: Release to crates.io
+
+      - name: "Release to crates.io"
         env:
           CRATES_TOKEN: ${{ secrets.CRATES_TOKEN }}
         run: cargo publish --token ${CRATES_TOKEN}

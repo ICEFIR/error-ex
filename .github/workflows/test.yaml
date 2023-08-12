@@ -7,21 +7,25 @@ on:
 jobs:
   test:
     name: "Cargo test"
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
     steps:
       - name: "Check out the repo"
         uses: actions/checkout@v3
 
       - uses: dtolnay/rust-toolchain@stable
         with:
-          profile: "minimal"
-          toolchain: "stable"
+          profile: toolchain
+          toolchain: stable
           override: true
-      - name: Check
+
+      - name: "Check"
         run: cargo check
-      - name: Clippy
+
+      - name: "Clippy"
         run: cargo clippy
-      - name: Fmt
+
+      - name: "Fmt"
         run: cargo fmt
-      - name: Test
+
+      - name: "Test"
         run: cargo test --all-features
