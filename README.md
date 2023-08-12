@@ -10,7 +10,7 @@
 The Goal of this create si to provide the following functionalies
 
 - **Dead Simple**: Error definition at will!
-- **Explicit Error Creation**:  Convienently construct your own error types with associated messages.
+- **Explicit Error Creation**:  Conveniently construct your own error types with associated messages.
 - **Error Mapping**: Effortlessly map one error type to another, enhancing clarity and context.
 
 ## Installation
