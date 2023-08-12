@@ -67,7 +67,6 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
-          override: true
 
       - name: "Release to crates.io"
         env:
