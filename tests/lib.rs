@@ -1,6 +1,5 @@
 #[cfg(test)]
 mod tests {
-    use crate::tests::InputError::InputErrorEx;
     use error_ex::{create_error, map_to_error};
     // Given
     create_error!(InputError => IllegalArgument, InvalidInput, MissingArgument);
@@ -13,7 +12,7 @@ mod tests {
 
         let illegal_argument = InputError::IllegalArgument(format!("Test 2"));
 
-        let missing_argument = InputErrorEx {
+        let missing_argument = InputError::Error {
             reason: InputError::Reason::MissingArgument,
             message: "Test 3".to_string(),
         };
@@ -30,7 +29,7 @@ mod tests {
     #[test]
     fn should_able_to_map_an_error_to_another_error() {
         // given
-        let res: Result<(), InputErrorEx> = Err(InputError::InvalidInput(format!("Test")));
+        let res: Result<(), InputError::Error> = Err(InputError::InvalidInput(format!("Test")));
 
         // when
         let mapped_res = res.map_err(map_to_error!(ResponseError::ParamError));

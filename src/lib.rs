@@ -1,7 +1,8 @@
 /// Defining an error with set of reason.
 /// # Usage
 /// ```
-/// create_error!(ErrorType => ErrorReason1, ErrorReason2, ErrorReason3)
+/// use error_ex::{create_error};
+/// create_error!(ErrorType => ErrorReason1, ErrorReason2, ErrorReason3);
 /// ```
 /// # Examples
 ///
@@ -9,12 +10,9 @@
 /// use error_ex::{create_error, map_to_error};
 ///
 /// create_error!(InputError => IllegalArgument, InvalidInput, MissingArgument);
+/// //Now, you can use the following code to instantiate this error
+/// InputError::IllegalArgument(format!("Your message here"));
 ///
-/// ```
-///
-/// Now, you can use the following code to instantiate this error
-/// ```
-/// InputError::IllegalArgument(format!("Your message here"))
 /// ```
 ///
 #[macro_export]
@@ -23,12 +21,11 @@ macro_rules! create_error {
         #[allow(non_snake_case)]
         pub mod $error {
             pub use paste::paste;
-            pub use std::error::Error;
             pub use std::fmt;
 
             paste! {
                 #[derive(Debug, Clone, PartialEq, Eq)]
-                pub struct [<$error:camel Ex>] {
+                pub struct Error {
                     pub reason: Reason,
                     pub message: String,
                 }
@@ -43,17 +40,17 @@ macro_rules! create_error {
 
                 $(
                     #[allow(unused_qualifications)]
-                    pub fn [<$error_reason>](message: String) -> [<$error:camel Ex>] {
-                        [<$error:camel Ex>] {
+                    pub fn [<$error_reason>](message: String) -> Error {
+                        Error {
                             reason: Reason::$error_reason,
                             message,
                         }
                     }
                 )*
 
-                impl Error for [<$error:camel Ex>] {}
+                impl std::error::Error for Error {}
 
-                impl fmt::Display for [<$error:camel Ex>] {
+                impl fmt::Display for Error {
                     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                         let error_name = stringify!([<$error:camel>]);
                         write!(
@@ -76,15 +73,28 @@ macro_rules! create_error {
 ///
 /// The explicit way
 /// ```
-/// let asset = fs::read_to_string(path).map_err(|error| {
-/// SchemaError::IoError(format!("SchemaError::IoError cased by {error}"))
-/// })?;
+/// use std::fs;
+/// use error_ex::{create_error, map_to_error};
+/// create_error!(FileError => IoError);
+/// create_error!(SchemaError => ParseError);
+/// let error: Result<(), FileError::Error> = Err(FileError::IoError("".to_string()));
+/// let mapped = error.map_err(|error| {
+///     SchemaError::ParseError(format!("SchemaError::ParseError error {error}"))
+/// });
+///
 /// ```
-
+/// ### Macro error mapping
 /// The above code can be simplified using `map_to_error!` macro
-/// ```rust
-/// let result: Result<(), Error> = Err(Error("Test".to_string()));
-/// let mapped_result = result.map_err(map_to_error!(InputError::IllegalArgument));
+/// ```
+///
+/// use std::fs;
+/// use std::io::Error;
+/// use error_ex::{create_error, map_to_error};
+/// create_error!(FileError => IoError);
+/// create_error!(SchemaError => ParseError);
+/// let error: Result<(), FileError::Error> = Err(FileError::IoError("".to_string()));
+/// let mapped = error.map_err(map_to_error!(SchemaError::ParseError));
+///
 /// ```
 ///
 #[macro_export]
