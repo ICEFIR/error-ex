@@ -35,9 +35,9 @@ use error_ex::{create_error, map_to_error};
 create_error!(InputError => IllegalArgument, InvalidInput, MissingArgument);
 ```
 
-Now, you can use the following code to instantiate this error
+And you'd be able to instantiate this error!
 ```rust
-InputError::IllegalArgument(format!("Your message here")) to create an error.
+InputError::illegal_argument(format!("Your message here"));
 ```
 
 ---
@@ -46,22 +46,36 @@ InputError::IllegalArgument(format!("Your message here")) to create an error.
 
 The explicit way
 ```rust
-    let asset = fs::read_to_string(path).map_err(|error| {
-        SchemaError::IoError(format!("SchemaError::IoError cased by {error}"))
-    })?;
+ use std::fs;
+ use error_ex::{create_error};
+ create_error!(FileError => IoError);
+ create_error!(SchemaError => ParseError);
+ let error: Result<(), FileError::Error> = Err(FileError::io_error("".to_string()));
+ let mapped = error.map_err(|error| {
+     SchemaError::parse_error(format!("SchemaError::ParseError error {error}"))
+ });
 ```
 
 
-The above code can be simplified using `map_to_error!` macro 
-```rust
-let result: Result<(), Error> = Err(Error("Test".to_string()));
-let mapped_result = result.map_err(map_to_error!(InputError::IllegalArgument));
-```
+### Function wrapper
+
+
+ The above code can be simplified using `map_to_error!`
+ macro using the build in lower order function
+ ``` rust
+ use std::fs;
+ use std::io::Error;
+ use error_ex::{create_error};
+ create_error!(FileError => IoError);
+ create_error!(SchemaError => ParseError);
+ let error: Result<(), FileError::Error> = Err(FileError::IoError("".to_string()));
+ let mapped = error.map_err(SchemaError::map_parse_error);
+ ```
 
 ### Usage Examples
 
 ---
-Please refer to our test directory for sample use-cases.
+Please refer to rust doc and test directory for sample use-cases.
 
 ## Contribution
 
