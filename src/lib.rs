@@ -33,7 +33,7 @@
 ///
 /// ```
 /// ## Function wrapper
-/// The above code can be simplified using `map_to_error!`
+/// The above code can be simplified using `map_to__error!`
 /// macro using the build in lower order function
 /// ```
 ///
@@ -46,7 +46,7 @@
 ///
 /// let error: Result<(), FileError> = Err(FileError::io_error("".to_string()));
 ///
-/// let mapped = error.map_err(SchemaError::map_parse_error);
+/// let mapped = error.map_err(SchemaError::map_to_parse_error);
 ///
 /// ```
 ///
@@ -82,7 +82,7 @@ macro_rules! create_error {
 
                 $(
                     #[allow(unused_qualifications)]
-                    pub fn [<map_ $error_reason:snake>]<E>(error: E) -> $error
+                    pub fn [<map_to_ $error_reason:snake>]<E>(error: E) -> $error
                     where
                         E: std::error::Error,
                     {

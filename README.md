@@ -20,7 +20,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-error-ex = "0.1.2"
+error-ex = "0.1.3"
 ```
 
 ## Quickstart
@@ -30,7 +30,7 @@ error-ex = "0.1.2"
 ### Creating and instantiating Explicit Errors
 
 ```rust
-use error_ex::{create_error, map_to_error};
+use error_ex::{create_error, map_to__error};
 
 create_error!(InputError => IllegalArgument, InvalidInput, MissingArgument);
 ```
@@ -63,7 +63,7 @@ The explicit way
 ### Function wrapper
 
 
- The above code can be simplified using `map_to_error!`
+ The above code can be simplified using `map_to__error!`
  macro using the build in lower order function
  ```rust
  use std::fs;
@@ -75,7 +75,7 @@ The explicit way
  
  let error: Result<(), FileError> = Err(FileError::io_error("".to_string()));
 
- let mapped = error.map_err(SchemaError::map_parse_error);
+ let mapped = error.map_err(SchemaError::map_to_parse_error);
  ```
 
 ### Usage Examples

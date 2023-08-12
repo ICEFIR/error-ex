@@ -26,13 +26,13 @@ mod tests {
     }
 
     #[test]
-    fn should_able_to_map_an_error_to_another_error() {
+    fn should_able_to_map_to_an_error_to_another_error() {
         // given
         let res: Result<(), InputError> = Err(InputError::invalid_input(format!("Test")));
 
         // when
 
-        let mapped_res = res.map_err(ResponseError::map_param_error);
+        let mapped_res = res.map_err(ResponseError::map_to_param_error);
 
         // then
         assert_eq!(mapped_res.is_err(), true);
