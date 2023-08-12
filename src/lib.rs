@@ -34,7 +34,7 @@ macro_rules! create_error {
                 }
 
                 #[derive(Debug, Clone, PartialEq, Eq)]
-                #[allow(dead_code)]
+                #[allow(unused_qualifications)]
                 pub enum Reason {
                     $(
                         [<$error_reason>],
@@ -42,7 +42,7 @@ macro_rules! create_error {
                 }
 
                 $(
-                    #[allow(dead_code)]
+                    #[allow(unused_qualifications)]
                     pub fn [<$error_reason>](message: String) -> [<$error:camel Ex>] {
                         [<$error:camel Ex>] {
                             reason: Reason::$error_reason,
@@ -55,10 +55,10 @@ macro_rules! create_error {
 
                 impl fmt::Display for [<$error:camel Ex>] {
                     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                        let error_name = stringify!(self);
+                        let error_name = stringify!([<$error:camel>]);
                         write!(
                             f,
-                            "{:?} error, reason: {:?}, message {:?}",
+                            "{:#?} error, reason: {:#?}, message {:#?}",
                             error_name,
                             self.reason,
                             self.message
@@ -93,12 +93,7 @@ macro_rules! map_to_error {
         |error| {
             let error_name = stringify!($error);
             let error_reason_name = stringify!($error_reason);
-            let error_string = format!(
-                "{}::{} caused by {}",
-                { error_name },
-                { error_reason_name },
-                { error }
-            );
+            let error_string = format!("{}::{} caused by {}", error_name, error_reason_name, error);
             $error::$error_reason(error_string)
         }
     };

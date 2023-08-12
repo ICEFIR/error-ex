@@ -42,8 +42,8 @@ mod tests {
         assert_eq!(
             error.message,
             format!(
-                "ResponseError::ParamError caused by Schema error, \
-                reason: InvalidInput, message \"Test\""
+                "ResponseError::ParamError caused by \
+                \"InputError\" error, reason: InvalidInput, message \"Test\""
             )
         )
     }
