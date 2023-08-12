@@ -6,7 +6,7 @@ on:
 jobs:
 
   test:
-    uses: ./test.yaml
+    uses: ./.github/workflows/test.yaml
 
   create-tag:
     name: "Create tag"
